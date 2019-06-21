@@ -1,0 +1,270 @@
+\documentclass[12pt]{report}
+
+\usepackage{blindtext} %%%Temporary package for gibberish
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%packages%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{fancyhdr} %header package
+\usepackage[margin=1in,tmargin=0.85in,headsep=0.2in]{geometry}
+\usepackage{anyfontsize}
+\usepackage{background}
+\usepackage{fontspec}
+\usepackage{graphicx}
+\usepackage{lastpage}
+\usepackage[absolute,overlay]{textpos}
+\usepackage[explicit]{titlesec}
+\usepackage{setspace}
+\usepackage{etoolbox}
+\usepackage{chngcntr}
+\usepackage{nameref} % Used to reference chapter/section names vice number
+\usepackage{tocloft}
+\usepackage{caption}
+\usepackage{natbib}
+\usepackage{hyperref}
+\usepackage{paralist}
+\usepackage[acronyms,toc,nomain,automake]{glossaries} % Acronym glossary
+\usepackage{pdfpages} %used to input whole pdf pages: final page
+\usepackage{appendix}
+\usepackage{nicefrac}
+%\usepackage{gensymb}
+\usepackage{silence} %silences deprecated warnings for format
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{float} %helps place figures/tables
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% TITLE VARIABLES %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\reportno}{REPORT NO:  USNTPS/RTR-2019/01}
+\newcommand{\header}{USNTPS/RTR-2019/01}
+\newcommand{\rpttitle}{REPORT TITLE}
+\newcommand{\name}{RANK First Last, SERVICE}
+\newcommand{\rptdate}{DD Month YYYY}
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%
+%%%% misc %%%%
+%%%%%%%%%%%%%%
+\makeglossaries
+\WarningFilter{glossaries}{Deprecated command}% Removes warning starting with "Deprecated command"
+\counterwithout{figure}{chapter} %starts figure counting from 1. Independent of location within chapter/section.
+\counterwithout{table}{chapter} %starts table counting from 1. Independent of location within chapter/section.
+\renewcommand{\headrulewidth}{0pt} %removes header underline
+\backgroundsetup{contents={}} %sets background image ("watermark")
+\doublespacing
+\setmainfont{Times New Roman}
+\makeatletter
+\patchcmd{\chapter}{\if@openright\cleardoublepage\else\clearpage\fi}{}{}{} %modifies \chapter so that it doesn't clear page automatically
+\makeatother
+% initial header/footer setup
+\fancypagestyle{plain}
+{%  the preset of fancyhdr 
+    \fancyhf{} % clear all header and footer fields
+    \fancyfoot[C]{\thepage} % except the center
+    \fancyhead[L]{\header}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}}
+\pagestyle{fancy}
+
+\DeclareCaptionType{afigure}[Figure][] % Create appendix figure environment
+\DeclareCaptionType{atable}[Table][] % Creates appendix table environment
+\renewcommand{\bibname}{References} % Change title of bibliography to References
+\makeatletter
+\renewcommand\@biblabel[1]{#1.} % Change style of bibliography to list reference with a number followed by a period. E.g., 1.
+\makeatother
+\setcitestyle{numbers} % Sets citation style to numerical. Use \citenum{} to not get parentheses
+% Change the appendix figure/table caption style to A-1, B-1 from A.1
+\renewcommand{\theafigure}{\thechapter-\arabic{afigure}}
+\renewcommand{\theatable}{\thechapter-\arabic{atable}}
+%Change equation style for tags
+\renewcommand{\theequation}{\textit{Eqn} \arabic{equation}} 
+
+%Marcos page formatting below
+% Header and footer format
+\fancyhf{}
+\fancyhead[L]{\header}
+\fancyfoot[C]{\thepage}
+\setlength{\voffset}{0in}
+\setlength{\headheight}{14.5pt}
+\setlength\parindent{0cm}
+
+%Paragraph formatting and counting
+\newcommand{\parnum}{\arabic{parcount}.}
+\newcommand{\pp}{\newline \vspace{-2ex}}
+\newcounter{parcount}
+\newcommand\p{%
+    \refstepcounter{parcount}%
+    \parnum \hspace{0.5em}%
+}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\titleformat
+{\chapter} % command
+[hang] % shape
+{} % format
+{} % label
+{0ex} % sep
+{\centering\MakeUppercase{#1}} % before-code
+[] % after-code
+\titlespacing{\chapter}{0ex}{0ex}{3ex}
+
+\titleformat
+{\section} % command
+[hang] % shape
+{} % format
+{} % label
+{0ex} % sep
+{\MakeUppercase{\underline{#1}}} % before-code
+[] % after-code
+\titlespacing{\section}{0ex}{0ex}{0.5ex}
+
+\titleformat
+{\subsection} % command
+[hang] % shape
+{} % format
+{} % label
+{0ex} % sep
+{\MakeUppercase{#1}} % before-code
+[] % after-code
+\titlespacing{\subsection}{0ex}{0ex}{-1ex}
+
+\titleformat
+{\subsubsection} % command
+[hang] % shape
+{} % format
+{} % label
+{0ex} % sep
+{\underline{#1}} % before-code
+[] % after-code
+\titlespacing{\subsubsection}{0ex}{0ex}{-1ex}
+%%%%%%%%%%%%
+%%%%%%%%%%%%
+%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%% Table of Contents formatting %%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setcounter{tocdepth}{2}
+\renewcommand{\cftchapdotsep}{2} %change dot spacing/step/density
+\renewcommand{\cftsecdotsep}{2}
+\renewcommand{\cftsubsecdotsep}{2}
+\renewcommand{\cftfigdotsep}{2}
+\renewcommand{\cfttabdotsep}{2}
+\renewcommand\numberline[1]{} %remove chap/sec numbering from TOC
+\renewcommand{\cftchapfont}{\normalfont}
+\renewcommand\cftchappagefont{\normalsize} %unbold page numbers
+\setlength{\cftbeforetoctitleskip}{0em} %move TOC title up or down
+\renewcommand{\cfttoctitlefont}{\hfil \normalfont\normalsize} %set TOC font and size
+\renewcommand{\cftloftitlefont}{\hfil \normalfont\normalsize}
+\renewcommand{\cftlottitlefont}{\hfil \normalfont\normalsize}
+\addtocontents{toc}{~\hfill\normalfont\underline{Page No.}\par} %place "_Page No._" over page numbers
+%Add page number on top of the list of figures with added vertical space
+\addtocontents{lof}{~\hfill\normalfont\underline{Page No.}{\vspace{10pt}}\par}
+\addtocontents{lot}{~\hfill\normalfont\underline{Page No.}{\vspace{10pt}}\par}
+\renewcommand*\listfigurename{Figures} %name LOF
+\renewcommand*\listtablename{Tables}
+\setlength{\cftfigindent}{0pt} %force zero indent of LOF to match TOC
+\setlength{\cfttabindent}{0pt}
+\cftsetindents{section}{0.25in}{0.5in} %set indents in TOC
+\cftsetindents{subsection}{0.5in}{0.5in}
+\cftsetindents{subsubsection}{0.75in}{0.5in}
+\setlength\cftaftertoctitleskip{0pt} %set spacing between TOC title and TOC content
+\setlength\cftafterloftitleskip{0pt}
+\setlength\cftafterlottitleskip{0pt}
+\renewcommand{\cftchapleader}{\normalfont\cftdotfill{\cftsecdotsep}}% Unbold dots for chapters
+\addtocontents{loafigure}{~\hfill\normalfont\underline{Page No.}\par}
+\addtocontents{loatable}{~\hfill\normalfont\underline{Page No.}\par}
+% Commands to remove space between chapters in the list of figures/list of tables
+\newcommand*{\noaddvspace}{\renewcommand*{\addvspace}[1]{}}
+\addtocontents{lot}{\protect\noaddvspace}
+\addtocontents{lof}{\protect\noaddvspace}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\begin{titlepage} % ensure you have a clean path to graphics folder
+
+\begin{picture}(50,50) %calls static background image, sets reservation of rectangular space in document for image (50x50pt)
+\put(-80,-690){\hbox{\includegraphics[scale=1.02]{graphics/title_pg1}}} %places object with start point (x, y}
+\end{picture}
+
+\vspace*{2.6cm} %sets vertical spacing offset from LaTeX's desired positioning
+\hspace*{-1.5cm} %sets horizontal spacing offset from LaTeX's desired positioning
+\fontsize{12}{12}\selectfont \reportno{}
+
+\begin{center} %center text horizontally
+\vspace*{5.cm}
+\fontsize{14}{12}\selectfont \bfseries {\rpttitle{}}
+\end{center}
+
+\begin{center}
+\fontsize{12}{12}\selectfont {by}
+\end{center}
+
+\begin{center}
+\fontsize{12}{12}\selectfont {\name{}}
+\end{center}
+
+\begin{center}
+\vspace*{1.cm}
+\fontsize{12}{12}\selectfont {\rptdate}
+\end{center}
+
+\end{titlepage}
+
+\pagebreak
+\pagenumbering{roman}
+
+\input{2_Summary}
+
+\input{3_Table_of_Contents_Figures_Tables}
+
+\doublespacing
+\setlength\parindent{0cm} % Added to eliminate indented, numbered paragraphs
+\pagenumbering{arabic}
+
+\input{4_Introduction}
+
+\input{5_Results_Evaluation}
+
+\input{6_Supporting_Data}
+
+\input{7_Conclusions}
+
+\input{8_Recommendations}
+
+\clearpage
+\addcontentsline{toc}{chapter}{References}
+\bibliography{TPS}
+\bibliographystyle{abbrvnat}
+
+\input{9_acronyms}
+
+%%%%%%%%%%%%%%%%%%% Start of the Appendices %%%%%%%%%%%%%%%%%
+\newpage
+\begin{appendices}
+\begin{singlespacing}
+% Redefine header and footer style for the appendices
+\fancypagestyle{plain}
+{%  the preset of fancyhdr 
+    \fancyhf{} % clear all header and footer fields
+    \fancyfoot[C]{\thepage} % except the center
+    \fancyhead[L]{\header}
+    \fancyfoot[R]{Appendix \thechapter}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}}
+	\pagestyle{plain}% Set page style to plain.
+
+\input{App_Figures}
+\input{App_Tables}
+\end{singlespacing}
+\end{appendices}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\includepdf{graphics/final_pg.pdf}  % Final page
+
+\end{document}
